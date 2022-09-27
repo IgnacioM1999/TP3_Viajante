@@ -3,7 +3,10 @@
 import itertools
 import numpy
 
-diccionarioObjetos = {'Cordoba' : [0, 677, 824, 698], 'Corrientes' : [646, 0, 677, 830], 'Formosa': [792, 677, 0, 968], 'La Plata': [698, 830, 968, 0]}
+diccionarioObjetos = {'Cordoba' : [0, 677, 824, 698], 
+                   'Corrientes' : [646, 0, 677, 830], 
+                       'Formosa': [792, 677, 0, 968], 
+                      'La Plata': [698, 830, 968, 0]}
 
  
 #inp_list = ['Cordoba', 'Corrientes']
@@ -30,19 +33,21 @@ def busquedaHeuristica(ciudades, ciudadActual,distanciaOtrasCiudadesFijas, dista
     distanciasSinCero=[]
     c=""
     indice= 0
+    kmTotal = 0
     distanciaMinima = min(distanciasOtrasCiudadesV2)
     if (distanciaMinima == 0):
         distanciasSinCero.extend(distanciasOtrasCiudadesV2) 
         distanciasSinCero.remove(0)
         print("Se encontro un 0 => distancias de las otras ciudades sin el cero:",distanciasSinCero)
         distanciaMinima = min(distanciasSinCero)
+    kmTotal = distanciaMinima
     print("distancia minima: ",distanciaMinima)
     #print("distaciasOtrasCiudades:", distanciasOtrasCiudades)
     indice = distanciasOtrasCiudadesFijas.index(distanciaMinima) #este indice es el indice de la ciudad en la lista distanciaOtrasCiudades que tiene la distancia mas corta con ciudadActual
     print("el indice en distanciaOtrasCiudadesFijas de la distancia minima:",indice)
     c = ciudades[indice]
     print("La distancia mas corta hacia la otra ciudad es: ", distanciaMinima, "correspondiente a:", c)
-    return c, indice
+    return c, indice, kmTotal
 
 #FUNCION PRINCIPAL
 ciudades = list(diccionarioObjetos.keys());
@@ -50,6 +55,8 @@ ciudadesMostrar = list(diccionarioObjetos.keys())
 ciudadAnterior = ""
 indiceCiudadAnterior = 0
 distanciasOtrasCiudadesV2=[]
+kmMasCorto = 0
+kmTotal =0
 print(ciudades)
 recorridos=[] #esta lista a va a tener las ciudades que se van recorriendo en orden
 indiceCiudadesRecorridas = []#estos indices los uso para ir eliminando las ciudades que ya fueron recorridas asi en el for no busca las distancias de las ciudades que ya pasamos
@@ -79,7 +86,8 @@ for v in range(len(ciudades)-1):
     print("distancias otras ciudades:",distanciasOtrasCiudadesFijas)
     # ciudadAnterior = ciudadActual
     #indiceCiudadAnterior = ciudades.index(ciudadAnterior)
-    ciu, indi = busquedaHeuristica(ciudades, ciudadActual, distanciasOtrasCiudadesFijas, distanciasOtrasCiudadesV2)
+    ciu, indi, kmMasCorto = busquedaHeuristica(ciudades, ciudadActual, distanciasOtrasCiudadesFijas, distanciasOtrasCiudadesV2)
+    kmTotal += kmMasCorto
     print("la ciudad devuelta es:",ciu)
     print("El indice devuelto es:",indi)
     recorridos.append(ciu)
@@ -98,8 +106,7 @@ for v in range(len(ciudades)-1):
         print("distancias otras ciudadesV2:",distanciasOtrasCiudadesV2)
     print("distanciasOtrasCiudadesV2 despues del pop:", distanciasOtrasCiudadesV2)
     print()
-print("el recorrido mas corto a todas las ciudades es:", recorridos)
-
+print("el recorrido mas corto a todas las ciudades es:", recorridos,"con una cantidad de km recorridos de:", kmTotal)
         
 
 #si es por heuristica, cuando estoy en una ciudad, hay que ver las distancias con esa ciudad y ver la mas chica.
