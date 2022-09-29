@@ -49,11 +49,20 @@ def busquedaHeuristica(ciudades, ciudadActual,distanciaOtrasCiudadesFijas, dista
     print("La distancia mas corta hacia la otra ciudad es: ", distanciaMinima, "correspondiente a:", c)
     return c, indice, kmTotal
 
+def distanciaCortaCiudadInicial(ciudadInicial, indiceCiudadInicial, ciudadActual):
+    distancias = []
+    print("la ultima ciudad que se recorrio es:", ciudadActual)
+    distancias = diccionarioObjetos.get(ciudadActual)
+    distanciaACiudadInicial = distancias[indiceCiudadInicial]
+    print("La distancia hacia la ciudad inicial ", ciudadInicial," es:", distanciaACiudadInicial)
+    return distanciaACiudadInicial 
+    
+
 #FUNCION PRINCIPAL
 ciudades = list(diccionarioObjetos.keys());
 ciudadesMostrar = list(diccionarioObjetos.keys())
 ciudadAnterior = ""
-indiceCiudadAnterior = 0
+indiceCiudadInicial = 0
 distanciasOtrasCiudadesV2=[]
 kmMasCorto = 0
 kmTotal =0
@@ -62,6 +71,7 @@ recorridos=[] #esta lista a va a tener las ciudades que se van recorriendo en or
 indiceCiudadesRecorridas = []#estos indices los uso para ir eliminando las ciudades que ya fueron recorridas asi en el for no busca las distancias de las ciudades que ya pasamos
 ciudadInicial = input("Ingrese la ciudad que quiera iniciar el viaje: ")
 ciudadActual = ciudadInicial
+
 
 #Se valida que la ciudad que ingresa el usuario se encuentre en la lista de ciudades
 bandera = buscarCiudad(ciudadesMostrar, ciudadActual)
@@ -106,11 +116,15 @@ for v in range(len(ciudades)-1):
         print("distancias otras ciudadesV2:",distanciasOtrasCiudadesV2)
     print("distanciasOtrasCiudadesV2 despues del pop:", distanciasOtrasCiudadesV2)
     print()
+recorridos.append(ciudadInicial)
+indiceCiudadInicial=ciudades.index(ciudadInicial)
+kmTotal += distanciaCortaCiudadInicial(ciudadInicial, indiceCiudadInicial, ciudadActual)
 print("el recorrido mas corto a todas las ciudades es:", recorridos,"con una cantidad de km recorridos de:", kmTotal)
-        
 
+
+        
 #si es por heuristica, cuando estoy en una ciudad, hay que ver las distancias con esa ciudad y ver la mas chica.
 # no se hace falta armar todas las soluciones porque sino se esta haciendo la exaustiva 
 
-
+#SUMAR LOS KILOMETROS DE LA ULTIMA CIUDAD A LA CIUDAD INICIAL Y PONER COMO ULTIMA CIUDAD LA CIUDAD INICIAL
 
