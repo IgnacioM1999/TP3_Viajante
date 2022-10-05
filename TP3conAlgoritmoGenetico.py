@@ -120,8 +120,19 @@ def crossoverCiclico(padre1, padre2): #Se usa un crossover ciclico
         cont+=1  
     return hijo1, hijo2
 
-def mutacion():
-    return
+def mutacion(cromosoma):
+    a = random.randrange(1, 4)
+    print("a: ", a)
+    b = a
+    print("b: ", b)
+    while a == b:
+        b = random.randrange(1, 4)
+    print("nuevo b: ", b)
+    aux = cromosoma.copy()
+    print("aux: ", aux)
+    cromosoma[b]=cromosoma[a]
+    cromosoma[a]= aux[b]
+    return cromosoma
 
 def funcionPrincipal(listaPoblacionInicial):
     
