@@ -4,7 +4,10 @@ import numpy
 import random
 
 # diccionarioObjetos = {'Cordoba' : [0, 677, 824, 698], 'Corrientes' : [646, 0, 677, 830], 'Formosa': [792, 677, 0, 968], 'La Plata': [698, 830, 968, 0]}
-dic = {1: ['Cordoba', [0, 677, 824, 698]], 2:['Corrientes',[646, 0, 677, 830]], 3: ['Formosa', [792, 677, 0, 968]], 4: ['La Plata', [698, 830, 968, 0]]}
+dic = {1: ['Cordoba' , [0, 677, 824, 698] , [-31.4135, -64.18105]],
+                      2: ['Corrientes' , [646, 0, 677, 830] , [ -27.461195,-58.836841]],
+                      3: ['Formosa' , [792, 677, 0, 968], [-26.18489, -58.17313]] ,
+                      4: ['La Plata' , [698, 830, 968, 0] , [-34.92145, -57.95453]]}
 
 
 def crearPoblacionInicial(listaNumerosCromosoma): # crea la poblacion incial de 50 cromomosomas con los 23 genes
@@ -101,37 +104,44 @@ def seleccionTorneo(listaPoblacion, listaFitness):
         print("lista ganadores en la iteracion",q+1," es ",listaGanadores)    
     return listaGanadores #listaGanadores es una lista con los cromosomas padres en formato STRING 
 
-def crossoverCiclico(padre1, padre2): #Se usa un crossover ciclico 
-    cont = 0
-    hijo1 = []
-    hijo2 = []
-    hijo1.append(padre1[0])
-    hijo2.append(padre2[0])
-    genBuscado = padre2[0]
-    cont+=1
-    while(cont <= len(padre1)-1):
-        if(padre1[cont] == genBuscado):
-            hijo1.append(padre1[cont])
-            hijo2.append(padre2[cont])
-            genBuscado = padre2[cont]
-        else:
-            hijo1.append(padre2[cont])
-            hijo2.append(padre1[cont])
-        cont+=1  
+def crossoverCiclico(padre1, padre2): #Se usa un crossover ciclico
+    probabilidad = random.randint(0, 1)
+    if probabilidad <= frecuenciaCrossover:
+        cont = 0
+        hijo1 = []
+        hijo2 = []
+        hijo1.append(padre1[0])
+        hijo2.append(padre2[0])
+        genBuscado = padre2[0]
+        cont+=1
+        while(cont <= len(padre1)-1):
+            if(padre1[cont] == genBuscado):
+                hijo1.append(padre1[cont])
+                hijo2.append(padre2[cont])
+                genBuscado = padre2[cont]
+            else:
+                hijo1.append(padre2[cont])
+                hijo2.append(padre1[cont])
+            cont+=1
+    else:
+        hijo1 = padre1
+        hijo2 = padre2
     return hijo1, hijo2
 
 def mutacion(cromosoma):
-    a = random.randrange(1, 4)
-    print("a: ", a)
-    b = a
-    print("b: ", b)
-    while a == b:
-        b = random.randrange(1, 4)
-    print("nuevo b: ", b)
-    aux = cromosoma.copy()
-    print("aux: ", aux)
-    cromosoma[b]=cromosoma[a]
-    cromosoma[a]= aux[b]
+    probabilidad = random.randint(0,1)
+    if probabilidad <= frecuenciaMutacion:
+        a = random.randrange(1, 4)
+        print("a: ", a)
+        b = a
+        print("b: ", b)
+        while a == b:
+            b = random.randrange(1, 4)
+        print("nuevo b: ", b)
+        aux = cromosoma.copy()
+        print("aux: ", aux)
+        cromosoma[b]=cromosoma[a]
+        cromosoma[a]= aux[b]
     return cromosoma
 
 def funcionPrincipal(listaPoblacionInicial):
@@ -171,8 +181,8 @@ def ejecutarProgramaPorIteracion(nroIteracion):
 #PROGRAMA PRINCIPAL
 cromosomasPoblacion = 5 # numero de cromosomas de las poblaciones
 ciclos = 200 # Cantidad de ciclos
-frecuenciaCrossover = 0
-frecuenciaMutacion = 0
+frecuenciaCrossover = 0.75
+frecuenciaMutacion = 0.25
 ejecutarProgramaPorIteracion(2)
 
 

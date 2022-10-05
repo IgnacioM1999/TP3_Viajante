@@ -4,7 +4,7 @@ diccionarioObjetos = {1: ['Cordoba' , [0, 677, 824, 698] , [-31.4135, -64.18105]
                       3: ['Formosa' , [792, 677, 0, 968], [-26.18489, -58.17313]] ,
                       4: ['La Plata' , [698, 830, 968, 0] , [-34.92145, -57.95453]]}
 
-recorridos = [1,4,3,2]
+recorridos = [1,2,3,4]
 ubicaciones = []
 for i in recorridos:
     ciudad = diccionarioObjetos[i]
