@@ -145,3 +145,38 @@ indiceRecorridoMinimo = listaKmRecorridos.index(kmMinimo)
 recorridoMasCorto = listaRecorridosCiudades[indiceRecorridoMinimo]
 print("el recorrido mas corto es:",recorridoMasCorto, "con un total km de:",kmMinimo)    
 
+######################################################################################################
+"""APARTADO MAPA"""
+import folium
+
+ubicaciones = []
+for i in recorridoMasCorto:
+    ciudad = diccionarioObjetos[i]
+    print("Ciudad: ",ciudad)
+    ubicaciones.append(ciudad[1])
+
+print("Ubicaciones: ",ubicaciones)
+
+m = folium.Map(location=[-38.416097, -63.616672], zoom_start = 5)
+
+route = folium.PolyLine(
+    locations = ubicaciones, #Conectar puntos de coordenadas
+    peso = 3, # el tamaño de la línea es 3
+    color = 'orange', # El color de la línea es naranja
+    opacidad = 0.8 #transparencia de la línea
+) .add_to (m) #Agregue esta línea al área m justo ahora
+
+folium.Marker(
+    location= ubicaciones[0],
+    popup="First Location",
+    icon=folium.Icon(color="red", icon="info-sign"),
+).add_to(m)
+
+folium.Marker(
+    location= ubicaciones[23],
+    popup="Last Location",
+    icon=folium.Icon(color="red", icon="info-sign"),
+).add_to(m)
+
+m.save("indexOpcionB.html")
+
