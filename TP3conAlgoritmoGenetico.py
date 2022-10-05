@@ -84,7 +84,7 @@ def seleccionTorneo(listaPoblacion, listaFitness):
     listaParticipantes=[]
     listaIndicesParticipantes=[]
     listaFitnessParticipantes=[]
-    k = 6 # porque la poblacion tiene que tener 50 cromosomas
+    k = 50 # porque la poblacion tiene que tener 50 cromosomas
     
     for q in range(k): # k es la cantidad de veces que se repite la seleccion por torneo
         largo.clear()
@@ -105,16 +105,16 @@ def seleccionTorneo(listaPoblacion, listaFitness):
             #print()
             parti = listaPoblacion[indiceParti] #parti tiene el cromosoma en STRING que fue seleccionado para ser participante
             listaParticipantes.append(parti) #agrego los participantes que van a ir al torneo a esta lista
-            print("participantes en la listaParticipantes: ", listaParticipantes)
+            #print("participantes en la listaParticipantes: ", listaParticipantes)
             #print()
             #ya esta conformado la lista con los 5 participantes, ahora tengo que seleccionar el que tiene el mayor fitness
         for o in listaIndicesParticipantes:
             #print("lista indices participantes: ",listaIndicesParticipantes)
             #print("valor de o: ", o)
-            print()
+            #print()
             listaFitnessParticipantes.append(listaFitness[o])
-            print("lista fitness de cada participante: ", listaFitnessParticipantes)
-            print()
+            #print("lista fitness de cada participante: ", listaFitnessParticipantes)
+            #print()
         minfit = min(listaFitnessParticipantes)
         #print("fitness maximo de la lista fitness participante: ", minfit)
         indiceGanador = listaFitnessParticipantes.index(minfit)
@@ -171,7 +171,10 @@ def funcionPrincipal(listaPoblacionInicial):
     listaFitness = []
     listaPadres = []
     
+    #Aplico la funcion Objetivo a cada cromosoma
     listaFunObj.extend(aplicarFunObj(listaPoblacionInicial))
+    
+    #Aplico la funcion Fitness a cada cromosoma segun su valor de la funcion objetivo
     listaFitness.extend(aplicarFitness(listaFunObj))
     
     #Se inicia la seleccion por torneo
@@ -184,9 +187,9 @@ def funcionPrincipal(listaPoblacionInicial):
     hijo2=0
     listaSiguienteGeneracion=[]
     print()
-    print("listaPadres:", listaPadres)
+    #print("listaPadres:", listaPadres)
     print(len(listaPadres))
-    for i in range(3): #se repite 25 veces xq hay 25 pares de cromosomas padres para aplicar el crossover que en total dan 50 cromosomas de la poblacion
+    for i in range(25): #se repite 25 veces xq hay 25 pares de cromosomas padres para aplicar el crossover que en total dan 50 cromosomas de la poblacion
         print("iteracion:", i+1)
         c1 = []
         c1.extend(listaPadres[z]) # c1 es una lista en formato ENTERO donde cada posicion contiene un gen, es decir c1 es un cromosoma padre
@@ -213,13 +216,7 @@ def ejecutarProgramaPorIteracion(nroIteracion):
 
     listaNumerosCromosoma = list(dic.keys()) #lista de los numeros de las ciudades obtenido del diccionario
     poblacionInicial = []
-    listaMinimosFit = []
-    listaMaximosFit = []
-    listaPromFit = []
-    listaMinimosObj = []
-    listaMaximosObj = []
-    listaPromObj = []
-    
+   
     #Se crea la poblacion inicial de 50 cromosomas. Cada cromosoma es una permutacion de 1 a 23, que simboliza las ciudades 
     c = crearPoblacionInicial(listaNumerosCromosoma)
     poblacionInicial.extend(c) #esta lista esta en formato ENTERO
@@ -228,16 +225,32 @@ def ejecutarProgramaPorIteracion(nroIteracion):
         print(n)# muestra cada cromosoma en la poblacion inicial
     print()
     #Se empieza a ejecutar la funcion ejecutarProgramaPorIteracion segun el parametro nroIteracion
+    print("NRO ITERACION:", 0)
+    nuevaGeneracion = []
+    nuevaGeneracion.extend(funcionPrincipal(poblacionInicial))
     for i in range(nroIteracion):
-        nuevaGeneracion = funcionPrincipal(poblacionInicial)
-        
-    return
+        print()
+        print("NRO ITERACION:", i+1)
+        nuevaGeneracion = funcionPrincipal(nuevaGeneracion)
+    
+    lis=[]
+    for j in nuevaGeneracion:
+        print("J:",j)
+        lis.append(funcionObjetivo(j))
+    recorridoMasCorto = min(lis)
+    print("recorrido mas corto:",recorridoMasCorto)
+    indiceRecorridoMasCorto = lis.index(recorridoMasCorto)
+    print("indiceRecorridoMasCorto:",indiceRecorridoMasCorto)
+    cromosomaRecorridoFinal = nuevaGeneracion[indiceRecorridoMasCorto]
+    print("cromosoma final con el recorrido mas corto:", cromosomaRecorridoFinal)
+    
+    return 1 #no hace falta que retorne nada importante
 
 #PROGRAMA PRINCIPAL
-cromosomasPoblacion = 6 # numero de cromosomas de las poblaciones (Tiene que ir 50 para la entrega)
-ciclos = 2 # Cantidad de ciclos - iteraciones
+cromosomasPoblacion = 50 # numero de cromosomas de las poblaciones (Tiene que ir 50 para la entrega)
+ciclos = 199 # Cantidad de ciclos - iteraciones
 frecuenciaCrossover = 0.75
 frecuenciaMutacion = 0.25
-ejecutarProgramaPorIteracion(2)
+ejecutarProgramaPorIteracion(ciclos)
 
 
