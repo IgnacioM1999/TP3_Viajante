@@ -46,9 +46,9 @@ def funcionObjetivo(cromosoma):
         if(indice < len(cromosoma)-1):
             ciudad = []
             distancias = []
-            ciudad = dic.get(i)
+            ciudad = dic.get(i) #en ciudad voy a tener una lista con tres listas. 1era:Nombre de la Ciudad. 2da:Las distancias a otras ciudades. 3era: Las coordenadas
             distancias.extend(ciudad[1])
-            print(ciudad)
+            #print(ciudad)
             #print("su distancias son:", distancias)
             indice += 1
             numeroProximaCiudad = cromosoma[indice]
@@ -60,19 +60,19 @@ def funcionObjetivo(cromosoma):
     return acum
 
 def funcionFitness(x, subLista) -> float: #El fitness del cromosoma se calcula como el cociente entre el valor de la función sobre la suma de todos los valores funcionales
-    return x / sum(subLista)
+    return (1/x) / sum(subLista)
 
-def aplicarFunObj(subLista): #
+def aplicarFunObj(subLista): #subLista es la listaPoblacionInicial que contiene los cromosomas (listas que contienen los numeros que hacen referencia a las ciudades)
     listaF = []
     for m in subLista:
-        f = funcionObjetivo(m) #OBS: subLista[m] es un cromosoma en su valor decimal en la posicion m en formato entero
+        f = funcionObjetivo(m) #OBS: subLista[m] es un numero que hace referencia a la ciudad en la posicion m de subLista
                                                 # en reduntante pedir que se convierta un entero a entero
         listaF.append(f) #listaF va a ser una lista que contiene el valor de un cromosoma aplicando la Funcion Objetivo en formato FLOTANTE
     return listaF #retornamos la lista con todos los valores de la funcion objetivo del correspondiente cromosoma (segun su posicion) en formato FLOTANTE
 
 def aplicarFitness(subLista): #Aca sublista es listaFunObj que es la lista que contiene los valores en formato entero de la funcion objetivo de cada cromosoma 
     listaFit = []
-    for m in subLista:
+    for m in subLista: # m es el valor de la funcion objetivo de un cromosoma en subLista(que es la lista de funcion Objetivo de todos los cromosomas)
         f = funcionFitness(m, subLista) #m contiene el valor entero en la posicion de subLista
         listaFit.append(f) #listaFit es una lista con los valores de la fitness de cada cromosoma en forma flotante(ya que lo que retorna a funcion fitness es el valor en flotante)
     return listaFit  # retorna una lista de los valores de la funcion Fitness aplicadas a los cromosomas en formato flotante
@@ -84,7 +84,7 @@ def seleccionTorneo(listaPoblacion, listaFitness):
     listaParticipantes=[]
     listaIndicesParticipantes=[]
     listaFitnessParticipantes=[]
-    k = 50 # porque la poblacion tiene que tener 50 cromosomas
+    k = 6 # porque la poblacion tiene que tener 50 cromosomas
     
     for q in range(k): # k es la cantidad de veces que se repite la seleccion por torneo
         largo.clear()
@@ -94,32 +94,32 @@ def seleccionTorneo(listaPoblacion, listaFitness):
     
         for t in range(len(listaPoblacion)): #aca genero la lista de los indices de listaPoblacionInicialCadena para trabajar mas tarde con el Fitness
             largo.append(t)
-            print(largo) #largo tiene todos los indices de listaPoblacionInicialCadena
-            print()
+            #print(largo) #largo tiene todos los indices de listaPoblacionInicialCadena
+            #print()
         for e in range(5):# 5 es la cantidad de individuos para seleccion torneo (el grupo de participantes)
             indiceParti= random.choice(largo) #elijo a los participantes que van a estar en el torneo
-            print("indice del participante seleccionado que hace referencia a la posicion en listaPoblacionIncialCadena es: ",indiceParti)
-            print()
+            #print("indice del participante seleccionado que hace referencia a la posicion en listaPoblacionIncialCadena es: ",indiceParti)
+            #print()
             listaIndicesParticipantes.append(indiceParti)
-            print("lista de indices de los participantes seleccionados en listaPoblacionInicialCadena: ",listaIndicesParticipantes)
-            print()
+            #print("lista de indices de los participantes seleccionados en listaPoblacionInicialCadena: ",listaIndicesParticipantes)
+            #print()
             parti = listaPoblacion[indiceParti] #parti tiene el cromosoma en STRING que fue seleccionado para ser participante
             listaParticipantes.append(parti) #agrego los participantes que van a ir al torneo a esta lista
             print("participantes en la listaParticipantes: ", listaParticipantes)
-            print()
+            #print()
             #ya esta conformado la lista con los 5 participantes, ahora tengo que seleccionar el que tiene el mayor fitness
         for o in listaIndicesParticipantes:
-            print("lista indices participantes: ",listaIndicesParticipantes)
-            print("valor de o: ", o)
+            #print("lista indices participantes: ",listaIndicesParticipantes)
+            #print("valor de o: ", o)
             print()
             listaFitnessParticipantes.append(listaFitness[o])
             print("lista fitness de cada participante: ", listaFitnessParticipantes)
             print()
         minfit = min(listaFitnessParticipantes)
-        print("fitness maximo de la lista fitness participante: ", minfit)
+        #print("fitness maximo de la lista fitness participante: ", minfit)
         indiceGanador = listaFitnessParticipantes.index(minfit)
-        print("el indice del ganador es: ", indiceGanador)
-        print()
+        #print("el indice del ganador es: ", indiceGanador)
+        #print()
             
         listaGanadores.append(listaParticipantes[indiceGanador])
         print("lista ganadores en la iteracion",q+1," es ",listaGanadores)    
@@ -130,34 +130,34 @@ def crossoverCiclico(padre1, padre2): #Se usa un crossover ciclico
     if probabilidad <= frecuenciaCrossover:
         cont = 0
         hijo1 = []
-        hijo2 = []
+        #hijo2 = []
         hijo1.append(padre1[0])
-        hijo2.append(padre2[0])
+        #hijo2.append(padre2[0])
         genBuscado = padre2[0]
         cont+=1
         while(cont <= len(padre1)-1):
             if(padre1[cont] == genBuscado):
                 hijo1.append(padre1[cont])
-                hijo2.append(padre2[cont])
+                #hijo2.append(padre2[cont])
                 genBuscado = padre2[cont]
             else:
                 hijo1.append(padre2[cont])
-                hijo2.append(padre1[cont])
+                #hijo2.append(padre1[cont])
             cont+=1
     else:
         hijo1 = padre1
-        hijo2 = padre2
-    return hijo1, hijo2
+        #hijo2 = padre2
+    return hijo1 
 
 def mutacion(cromosoma):
     probabilidad = random.randint(0,1)
     if probabilidad <= frecuenciaMutacion:
-        a = random.randrange(1, 4)
+        a = random.randrange(1, 24)
         print("a: ", a)
         b = a
         print("b: ", b)
         while a == b:
-            b = random.randrange(1, 4)
+            b = random.randrange(1, 24)
         print("nuevo b: ", b)
         aux = cromosoma.copy()
         print("aux: ", aux)
@@ -173,7 +173,41 @@ def funcionPrincipal(listaPoblacionInicial):
     
     listaFunObj.extend(aplicarFunObj(listaPoblacionInicial))
     listaFitness.extend(aplicarFitness(listaFunObj))
-    return
+    
+    #Se inicia la seleccion por torneo
+    listaPadres.extend(seleccionTorneo(listaPoblacionInicial, listaFitness))
+    
+    #Aplicar crossover ciclico y mutacion
+    z=0
+    i=0
+    hijo1=0
+    hijo2=0
+    listaSiguienteGeneracion=[]
+    print()
+    print("listaPadres:", listaPadres)
+    print(len(listaPadres))
+    for i in range(3): #se repite 25 veces xq hay 25 pares de cromosomas padres para aplicar el crossover que en total dan 50 cromosomas de la poblacion
+        print("iteracion:", i+1)
+        c1 = []
+        c1.extend(listaPadres[z]) # c1 es una lista en formato ENTERO donde cada posicion contiene un gen, es decir c1 es un cromosoma padre
+        c2 = []
+        c2.extend(listaPadres[z+1]) # c2 es una lista en formato ENTERO donde cada posicion contiene un gen, es decir c2 es un cromosoma padre
+        print("padre1: ",c1)
+        print("padre2: ",c2)
+        hijo1 = crossoverCiclico(c1, c2) # hijo1 y hijo son listas de Enteros donde cada posicion es un gen entero. hijo1 y hijo2 son cromosoma 
+        hijo2 = crossoverCiclico(c2, c1)
+        print("hijo1 con crossover aplicado: ", hijo1)
+        print("hijo2 con crossover aplicado: ", hijo2)
+        hijo1 = mutacion(hijo1)
+        hijo2 = mutacion(hijo2)
+        z += 2 #con la variable z me ubico a cada par de posicion en el arreglo padre
+        print(hijo1)
+        print(hijo2)
+        listaSiguienteGeneracion.append(hijo1)
+        listaSiguienteGeneracion.append(hijo2)
+    print (listaSiguienteGeneracion)
+    
+    return (listaSiguienteGeneracion)
 
 def ejecutarProgramaPorIteracion(nroIteracion):
 
@@ -200,8 +234,8 @@ def ejecutarProgramaPorIteracion(nroIteracion):
     return
 
 #PROGRAMA PRINCIPAL
-cromosomasPoblacion = 5 # numero de cromosomas de las poblaciones
-ciclos = 200 # Cantidad de ciclos
+cromosomasPoblacion = 6 # numero de cromosomas de las poblaciones (Tiene que ir 50 para la entrega)
+ciclos = 2 # Cantidad de ciclos - iteraciones
 frecuenciaCrossover = 0.75
 frecuenciaMutacion = 0.25
 ejecutarProgramaPorIteracion(2)
