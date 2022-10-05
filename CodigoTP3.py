@@ -150,3 +150,38 @@ print("el recorrido mas corto a todas las ciudades es:", recorridos,"con una can
 
 #SUMAR LOS KILOMETROS DE LA ULTIMA CIUDAD A LA CIUDAD INICIAL Y PONER COMO ULTIMA CIUDAD LA CIUDAD INICIAL
 
+######################################################################################################
+"""APARTADO MAPA"""
+import folium
+
+ubicaciones = []
+for i in recorridos:
+    ciudad = diccionarioObjetos[i]
+    print("Ciudad: ",ciudad)
+    ubicaciones.append(ciudad[1])
+
+print("Ubicaciones: ",ubicaciones)
+
+m = folium.Map(location=[-38.416097, -63.616672], zoom_start = 5)
+
+route = folium.PolyLine(
+    locations = ubicaciones, #Conectar puntos de coordenadas
+    peso = 3, # el tamaño de la línea es 3
+    color = 'orange', # El color de la línea es naranja
+    opacidad = 0.8 #transparencia de la línea
+) .add_to (m) #Agregue esta línea al área m justo ahora
+
+folium.Marker(
+    location= ubicaciones[0],
+    popup="First Location",
+    icon=folium.Icon(color="red", icon="info-sign"),
+).add_to(m)
+
+folium.Marker(
+    location= ubicaciones[23],
+    popup="Last Location",
+    icon=folium.Icon(color="red", icon="info-sign"),
+).add_to(m)
+
+m.save("indexOpcionA.html")
+
