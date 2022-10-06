@@ -207,7 +207,8 @@ def elitismo(listaPoblacion, listaFitness):
 
 
 def crossoverCiclico(padre1, padre2):  # Se usa un crossover ciclico
-    probabilidad = random.randint(0, 1)
+    probabilidad = random.uniform(0, 1)
+    print("probabilidadCrossover: ",probabilidad)
     if probabilidad <= frecuenciaCrossover:
         cont = 0
         hijo1 = []
@@ -216,18 +217,26 @@ def crossoverCiclico(padre1, padre2):  # Se usa un crossover ciclico
         # hijo2.append(padre2[0])
         genBuscado = padre2[0]
         cont += 1
+        listaUsados = []
+        listaUsados.append(padre1[0])
         while (cont <= len(padre1) - 1):
             if (padre1[cont] == genBuscado):
                 hijo1.append(padre1[cont])
+                listaUsados.append(padre1[cont])
                 # hijo2.append(padre2[cont])
                 genBuscado = padre2[cont]
             else:
-                hijo1.append(padre2[cont])
-                # hijo2.append(padre1[cont])
+                if(padre2[cont] in listaUsados):
+                    hijo1.append(padre1[cont])
+                    listaUsados.append(padre1[cont])
+                else:
+                    hijo1.append(padre2[cont])
+                    # hijo2.append(padre1[cont])
             cont += 1
     else:
         hijo1 = padre1
         # hijo2 = padre2
+
     return hijo1
 
 
@@ -339,7 +348,7 @@ def ejecutarProgramaPorIteracion(nroIteracion):
     cromosomaRecorridoFinal = nuevaGeneracion[indiceRecorridoMasCorto]
     print("cromosoma final con el recorrido mas corto:", cromosomaRecorridoFinal)
 
-    return 1  # no hace falta que retorne nada importante
+    return cromosomaRecorridoFinal  # no hace falta que retorne nada importante
 
 
 # PROGRAMA PRINCIPAL
@@ -347,6 +356,48 @@ cromosomasPoblacion = 50  # numero de cromosomas de las poblaciones (Tiene que i
 ciclos = 199  # Cantidad de ciclos - iteraciones
 frecuenciaCrossover = 0.75
 frecuenciaMutacion = 0.25
-ejecutarProgramaPorIteracion(ciclos)
+recorrido = []
+recorrido = ejecutarProgramaPorIteracion(ciclos)
+
+
+
+######################################################################################################
+"""APARTADO MAPA"""
+import folium
+
+ubicaciones = []
+for i in recorrido:
+    ciudad = dic[i]
+    print("Ciudad: ",ciudad)
+    ubicaciones.append(ciudad[2])
+
+print("Ubicaciones: ",ubicaciones)
+
+m = folium.Map(location=[-38.416097, -63.616672], zoom_start = 5)
+
+route = folium.PolyLine(
+    locations = ubicaciones, #Conectar puntos de coordenadas
+    peso = 3, # el tamaño de la línea es 3
+    color = 'orange', # El color de la línea es naranja
+    opacidad = 0.8 #transparencia de la línea
+) .add_to (m) #Agregue esta línea al área m justo ahora
+
+folium.Marker(
+    location= ubicaciones[0],
+    popup="First Location",
+    icon=folium.Icon(color="red", icon="info-sign"),
+).add_to(m)
+
+folium.Marker(
+    location= ubicaciones[23],
+    popup="Last Location",
+    icon=folium.Icon(color="red", icon="info-sign"),
+).add_to(m)
+
+m.save("indexOpcionC-Torneo+Elitismo.html")
+
+
+
+
 
 
