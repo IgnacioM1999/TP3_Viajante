@@ -125,29 +125,38 @@ def seleccionTorneo(listaPoblacion, listaFitness):
         print("lista ganadores en la iteracion",q+1," es ",listaGanadores)    
     return listaGanadores #listaGanadores es una lista con los cromosomas padres en formato STRING 
 
-def crossoverCiclico(padre1, padre2): #Se usa un crossover ciclico
-    probabilidad = random.randint(0, 1)
+def crossoverCiclico(padre1, padre2):  # Se usa un crossover ciclico
+    probabilidad = random.uniform(0, 1)
+    print("probabilidadCrossover: ",probabilidad)
     if probabilidad <= frecuenciaCrossover:
         cont = 0
         hijo1 = []
-        #hijo2 = []
+        # hijo2 = []
         hijo1.append(padre1[0])
-        #hijo2.append(padre2[0])
+        # hijo2.append(padre2[0])
         genBuscado = padre2[0]
-        cont+=1
-        while(cont <= len(padre1)-1):
-            if(padre1[cont] == genBuscado):
+        cont += 1
+        listaUsados = []
+        listaUsados.append(padre1[0])
+        while (cont <= len(padre1) - 1):
+            if (padre1[cont] == genBuscado):
                 hijo1.append(padre1[cont])
-                #hijo2.append(padre2[cont])
+                listaUsados.append(padre1[cont])
+                # hijo2.append(padre2[cont])
                 genBuscado = padre2[cont]
             else:
-                hijo1.append(padre2[cont])
-                #hijo2.append(padre1[cont])
-            cont+=1
+                if(padre2[cont] in listaUsados):
+                    hijo1.append(padre1[cont])
+                    listaUsados.append(padre1[cont])
+                else:
+                    hijo1.append(padre2[cont])
+                    # hijo2.append(padre1[cont])
+            cont += 1
     else:
         hijo1 = padre1
-        #hijo2 = padre2
-    return hijo1 
+        # hijo2 = padre2
+
+    return hijo1
 
 def mutacion(cromosoma):
     probabilidad = random.randint(0,1)
@@ -176,7 +185,7 @@ def funcionPrincipal(listaPoblacionInicial):
     
     #Aplico la funcion Fitness a cada cromosoma segun su valor de la funcion objetivo
     listaFitness.extend(aplicarFitness(listaFunObj))
-    
+
     #Se inicia la seleccion por torneo
     listaPadres.extend(seleccionTorneo(listaPoblacionInicial, listaFitness))
     
