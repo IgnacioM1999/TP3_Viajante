@@ -253,13 +253,50 @@ def ejecutarProgramaPorIteracion(nroIteracion):
     cromosomaRecorridoFinal = nuevaGeneracion[indiceRecorridoMasCorto]
     print("cromosoma final con el recorrido mas corto:", cromosomaRecorridoFinal)
     
-    return 1 #no hace falta que retorne nada importante
+    return cromosomaRecorridoFinal
 
 #PROGRAMA PRINCIPAL
 cromosomasPoblacion = 50 # numero de cromosomas de las poblaciones (Tiene que ir 50 para la entrega)
 ciclos = 199 # Cantidad de ciclos - iteraciones
 frecuenciaCrossover = 0.75
-frecuenciaMutacion = 0.25
-ejecutarProgramaPorIteracion(ciclos)
+frecuenciaMutacion = 0.05
+recorrido = []
+recorrido = ejecutarProgramaPorIteracion(ciclos)
+
+
+######################################################################################################
+"""APARTADO MAPA"""
+import folium
+
+ubicaciones = []
+for i in recorrido:
+    ciudad = dic[i]
+    print("Ciudad: ",ciudad)
+    ubicaciones.append(ciudad[2])
+
+print("Ubicaciones: ",ubicaciones)
+
+m = folium.Map(location=[-38.416097, -63.616672], zoom_start = 5)
+
+route = folium.PolyLine(
+    locations = ubicaciones, #Conectar puntos de coordenadas
+    peso = 3, # el tamaño de la línea es 3
+    color = 'orange', # El color de la línea es naranja
+    opacidad = 0.8 #transparencia de la línea
+) .add_to (m) #Agregue esta línea al área m justo ahora
+
+folium.Marker(
+    location= ubicaciones[0],
+    popup="First Location",
+    icon=folium.Icon(color="red", icon="info-sign"),
+).add_to(m)
+
+folium.Marker(
+    location= ubicaciones[23],
+    popup="Last Location",
+    icon=folium.Icon(color="red", icon="info-sign"),
+).add_to(m)
+
+m.save("indexOpcionC-Torneo.html")
 
 

@@ -348,14 +348,14 @@ def ejecutarProgramaPorIteracion(nroIteracion):
     cromosomaRecorridoFinal = nuevaGeneracion[indiceRecorridoMasCorto]
     print("cromosoma final con el recorrido mas corto:", cromosomaRecorridoFinal)
 
-    return cromosomaRecorridoFinal  # no hace falta que retorne nada importante
+    return cromosomaRecorridoFinal
 
 
 # PROGRAMA PRINCIPAL
 cromosomasPoblacion = 50  # numero de cromosomas de las poblaciones (Tiene que ir 50 para la entrega)
 ciclos = 199  # Cantidad de ciclos - iteraciones
 frecuenciaCrossover = 0.75
-frecuenciaMutacion = 0.25
+frecuenciaMutacion = 0.05
 recorrido = []
 recorrido = ejecutarProgramaPorIteracion(ciclos)
 
