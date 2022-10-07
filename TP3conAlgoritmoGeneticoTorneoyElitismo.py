@@ -374,6 +374,9 @@ for i in recorrido:
     ciudad = dic[i]
     print("Ciudad: ",ciudad)
     ubicaciones.append(ciudad[2])
+indiceCiudadOrigen = recorrido[0]
+ciudadOrigen = dic[indiceCiudadOrigen]
+ubicaciones.append(ciudadOrigen[2])
 
 print("Ubicaciones: ",ubicaciones)
 
