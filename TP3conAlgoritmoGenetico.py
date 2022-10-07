@@ -136,18 +136,16 @@ def crossoverCiclico(padre1, padre2):  # Se usa un crossover ciclico
         # hijo2.append(padre2[0])
         genBuscado = padre2[0]
         cont += 1
-        listaUsados = []
-        listaUsados.append(padre1[0])
         while (cont <= len(padre1) - 1):
             if (padre1[cont] == genBuscado):
                 hijo1.append(padre1[cont])
-                listaUsados.append(padre1[cont])
                 # hijo2.append(padre2[cont])
                 genBuscado = padre2[cont]
             else:
-                if(padre2[cont] in listaUsados):
+                if(padre2[cont] == padre1[0]):
                     hijo1.append(padre1[cont])
-                    listaUsados.append(padre1[cont])
+                    hijo1.extend(padre2[(cont+1):])
+                    break
                 else:
                     hijo1.append(padre2[cont])
                     # hijo2.append(padre1[cont])
@@ -155,7 +153,13 @@ def crossoverCiclico(padre1, padre2):  # Se usa un crossover ciclico
     else:
         hijo1 = padre1
         # hijo2 = padre2
-
+    a = False
+    for i in range(len(padre1)):
+        if hijo1.count(i)>1:
+            a = True
+            break
+    if a == True:
+        hijo1 = padre1
     return hijo1
 
 def mutacion(cromosoma):
