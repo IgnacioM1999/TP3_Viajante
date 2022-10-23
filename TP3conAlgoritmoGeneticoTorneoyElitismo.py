@@ -145,7 +145,7 @@ def seleccionTorneo(listaPoblacion, listaFitness):
     listaParticipantes = []
     listaIndicesParticipantes = []
     listaFitnessParticipantes = []
-    k = 50  # porque la poblacion tiene que tener 50 cromosomas
+    k = 48  # porque la poblacion tiene que tener 48 cromosomas
 
     for q in range(k):  # k es la cantidad de veces que se repite la seleccion por torneo
         largo.clear()
@@ -283,7 +283,6 @@ def funcionPrincipal(listaPoblacionInicial):
 
     # Se inicia la seleccion por torneo
     listaPadres.extend(seleccionTorneo(listaPoblacionInicial, listaFitness))
-
     # Aplicar crossover ciclico y mutacion
     z = 0
     i = 0
